@@ -1,5 +1,5 @@
 # Magento 2.4
-The payment extension for Magento 2, support WeChat Pay and Alipay
+The payment extension for Magento 2.4 support WeChat Pay, Alipay, Unionpay, UnionPay-QuickPass, iDeal,Sofort (Klarna),PayPal, Bancontact and Visa/Master card.
 
 Magento® 2 use the Composer to manage the module package and the library. Composer is a dependency manager for PHP. Composer declare the libraries your project depends on and it will manage (install/update) them for you.
 
