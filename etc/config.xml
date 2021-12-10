@@ -8,6 +8,9 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
         <payment>
+			<yabandpay>
+			    <pay_timeout>1440</pay_timeout>
+			</yabandpay>
             <yabandpay_wechatpay>
                 <debug>1</debug>
                 <active>1</active>

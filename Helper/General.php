@@ -52,6 +52,7 @@ class General extends AbstractHelper
     const MODULE_CODE = 'yabandpay';
     const YABANDPAY_USERNAME = 'payment/' . self::MODULE_CODE . '/username';
     const YABANDPAY_TOKEN = 'payment/' . self::MODULE_CODE . '/token';
+    const YABANDPAY_PAY_TIMEOUT = 'payment/' . self::MODULE_CODE . '/pay_timeout';
 
     const YABANDPAY_WECHATPAY_ACTIVE = 'payment/' . self::MODULE_CODE . '/wechatpay_active';
     const YABANDPAY_WECHATPAY_DESC = 'payment/' . self::MODULE_CODE . '/wechatpay_desc';
@@ -408,6 +409,7 @@ class General extends AbstractHelper
         $description = $this->getOrderProduct($order);
         $notifyUrl = $this->getNotifyUrl();
         $redirectUrl = $this->getRedirectUrl();
+        $timeout=$this->getPayTimeout();
 
         try {
             $pay_url = $this->getApiInstance()->payment(
@@ -418,7 +420,7 @@ class General extends AbstractHelper
                 $description,
                 $redirectUrl,
                 $notifyUrl,
-                0,
+                $timeout,
                 json_encode([
                     'magento_order_id' => $order->getId(),
                     'plugin_version' => 'magento2.4.2-yabandpay1.0.0'
@@ -504,6 +506,12 @@ class General extends AbstractHelper
     public function getAuthInvoice()
     {
         return (bool)$this->getStoreConfig(self::YABANDPAY_AUTO_INVOICE);
+    }
+
+    public function getPayTimeout()
+    {
+        $pay_timeout = $this->getStoreConfig(self::YABANDPAY_PAY_TIMEOUT);
+        return $pay_timeout<0 ? 0 : $pay_timeout;
     }
 
     /**

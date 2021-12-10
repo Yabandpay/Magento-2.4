@@ -98,6 +98,11 @@
                 <field id="token" translate="label" type="password" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>YaBand Token</label>
                 </field>
+                <field id="pay_timeout" translate="label" type="text" sortOrder="62" showInDefault="1" showInWebsite="1" showInStore="1" canRestore="1" >
+                    <label>Pay Timeout</label>
+                    <comment>Payment timeout range: 1-1440 minutes</comment>
+                    <validate>required-entry</validate>
+                </field>
                 <field id="currency" translate="label" type="select" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Currency</label>
                     <source_model>YaBandPay\Payment\Model\Config\Source\Currency</source_model>
