@@ -348,10 +348,12 @@ class General extends AbstractHelper
      */
     public function addTolog($type, $data)
     {
-        if($type == 'error'){
-            $this->logger->addErrorLog($data);
-        }else{
-            $this->logger->addInfoLog($data);
+        if($this->getDebug()){
+            if($type == 'error'){
+                $this->logger->addErrorLog($data);
+            }else{
+                $this->logger->addInfoLog($data);
+            }
         }
     }
 
@@ -423,7 +425,7 @@ class General extends AbstractHelper
                 $timeout,
                 json_encode([
                     'magento_order_id' => $order->getId(),
-                    'plugin_version' => 'magento2.4.2-yabandpay1.0.0'
+                    'plugin_version' => 'magento2.4.2-yabandpay1.0.3'
                 ]),
                 $order->getCustomerEmail()
             );
@@ -512,6 +514,11 @@ class General extends AbstractHelper
     {
         $pay_timeout = $this->getStoreConfig(self::YABANDPAY_PAY_TIMEOUT);
         return $pay_timeout<0 ? 0 : $pay_timeout;
+    }
+
+    public function getDebug()
+    {
+        return (bool)$this->getStoreConfig(self::YABANDPAY_DEBUG);
     }
 
     /**
