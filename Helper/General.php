@@ -76,6 +76,7 @@ class General extends AbstractHelper
     const YABANDPAY_UNIONPAYQUICKPASS_DESC = 'payment/' . self::MODULE_CODE . '/unionpayquickpass_desc';
     const YABANDPAY_CURRENCY = 'payment/' . self::MODULE_CODE . '/currency';
     const YABANDPAY_FEE = 'payment/' . self::MODULE_CODE . '/fee';
+    const YABANDPAY_CANCELURL = 'payment/' . self::MODULE_CODE . '/cancel_url';
     const YABANDPAY_AUTO_EMAIL = 'payment/' . self::MODULE_CODE . '/auto_send_email';
     const YABANDPAY_AUTO_INVOICE = 'payment/' . self::MODULE_CODE . '/auto_invoice';
     const YABANDPAY_DEBUG = 'payment/' . self::MODULE_CODE . '/debug';
@@ -412,6 +413,10 @@ class General extends AbstractHelper
         $notifyUrl = $this->getNotifyUrl();
         $redirectUrl = $this->getRedirectUrl();
         $timeout=$this->getPayTimeout();
+        $cancelUrl=$this->getCancelUrl();
+        if(empty($cancelUrl)){
+            $cancelUrl='';
+        }
 
         try {
             $pay_url = $this->getApiInstance()->payment(
@@ -425,9 +430,11 @@ class General extends AbstractHelper
                 $timeout,
                 json_encode([
                     'magento_order_id' => $order->getId(),
-                    'plugin_version' => 'magento2.4.2-yabandpay1.0.3'
+                    'plugin_version' => 'magento2.4.2-yabandpay1.0.5',
+                    'cancel_url'=>$cancelUrl
                 ]),
-                $order->getCustomerEmail()
+                $order->getCustomerEmail(),
+                $cancelUrl
             );
         } catch (\Exception $e){
             $error_hint_url = 'https://partner.yabandpay.com/payments/error?message='.\urlencode($e->getMessage());
@@ -444,7 +451,7 @@ class General extends AbstractHelper
         foreach($order->getAllItems() as $item){
             $product = $item->getData();
             if(isset($product['name']) && !empty($product['name'])){
-                $productList[] = $product['name'];
+                $productList[] = $product['name']. '*' .intval($product['qty_ordered']);
             }
         }
         return implode(',', $productList);
@@ -520,6 +527,13 @@ class General extends AbstractHelper
     {
         return (bool)$this->getStoreConfig(self::YABANDPAY_DEBUG);
     }
+
+    public function getCancelUrl()
+    {
+        $cancelurl=$this->getStoreConfig(self::YABANDPAY_CANCELURL);
+        return $cancelurl;
+    }
+
 
     /**
      * getOrderAmountByOrder
