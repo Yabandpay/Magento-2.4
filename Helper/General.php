@@ -430,7 +430,7 @@ class General extends AbstractHelper
                 $timeout,
                 json_encode([
                     'magento_order_id' => $order->getId(),
-                    'plugin_version' => 'magento2.4.2-yabandpay1.0.5',
+                    'plugin_version' => 'magento2.4.2-yabandpay1.0.6',
                     'cancel_url'=>$cancelUrl
                 ]),
                 $order->getCustomerEmail(),
@@ -530,6 +530,7 @@ class General extends AbstractHelper
 
     public function getCancelUrl()
     {
+        //return $this->urlBuilder->getUrl(self::ROUTER_NAME . '/checkout/cancel');
         $cancelurl=$this->getStoreConfig(self::YABANDPAY_CANCELURL);
         return $cancelurl;
     }

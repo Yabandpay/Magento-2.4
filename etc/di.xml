@@ -21,4 +21,7 @@
             </argument>
         </arguments>
     </type>
+    <type name="Magento\Framework\Session\SessionStartChecker">
+        <plugin name="transparent_session_checker" type="YaBandPay\Payment\Plugin\TransparentSessionChecker"/>
+    </type>
 </config>
